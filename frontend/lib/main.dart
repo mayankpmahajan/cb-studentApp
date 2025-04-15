@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/google_sign.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Onboarding App',
       theme: ThemeData(primarySwatch: Colors.indigo),
-      home: const OnboardingForm(),
+      // home: const OnboardingForm(),
+      home: GoogleSign()
     );
   }
 }
@@ -47,7 +49,7 @@ class _OnboardingFormState extends State<OnboardingForm> {
 
   Future<void> fetchDropdownData() async {
     final response =
-        await http.get(Uri.parse('http://localhost:5000/api/v1/mappings/dropdown'));
+        await http.get(Uri.parse('http://10.0.2.2:5000/api/v1/mappings/dropdown'));
 
     if (response.statusCode == 200) {
       try {
@@ -81,7 +83,7 @@ class _OnboardingFormState extends State<OnboardingForm> {
       };
 
       final response = await http.post(
-        Uri.parse('http://localhost:5000/api/v1/student/onboarding'),
+        Uri.parse('http://10.0.2.2:5000/api/v1/student/onboarding'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(data),
       );
