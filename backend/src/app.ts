@@ -35,7 +35,16 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+const frontendUrlLocal = process.env.FRONTEND_URL_LOCAL || 'http://localhost:5173';
+const frontendUrlProd = process.env.FRONTEND_URL_PROD || 'https://cb-student-app.vercel.app/';
+
+app.use(cors({
+  origin: [
+    frontendUrlLocal,
+    frontendUrlProd
+  ],
+  credentials: true
+}));
 app.use(helmet());
 // app.set("trust proxy", true);
 app.use(express.urlencoded({ extended: true }));
