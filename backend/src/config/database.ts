@@ -1,7 +1,10 @@
 // src/db/index.ts
 import { Sequelize } from 'sequelize';
 import { logger } from '../app';
+import dotenv from 'dotenv';
 
+// Load environment variables
+dotenv.config();
 // Create the sequelize instance BEFORE importing any models
 const sequelize = new Sequelize({
   dialect: 'postgres',
@@ -10,7 +13,13 @@ const sequelize = new Sequelize({
   username: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'password',
   database: process.env.DB_NAME || 'studentdb',
-  logging: (msg: any) => logger.debug(msg)
+  logging: (msg: any) => logger.debug(msg),
+  dialectOptions: {
+    ssl: {
+      require: true,               // Force SSL connection
+      rejectUnauthorized: false   // Disable SSL certificate validation (if necessary)
+    }
+  }
 });
 
 // Export sequelize so it can be imported by model files
